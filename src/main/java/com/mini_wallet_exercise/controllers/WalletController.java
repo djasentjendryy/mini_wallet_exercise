@@ -6,6 +6,8 @@ import com.mini_wallet_exercise.apis.response.DisableWalletResponse;
 import com.mini_wallet_exercise.apis.response.ErrorResponse;
 import com.mini_wallet_exercise.apis.response.MiniWalletResponse;
 import com.mini_wallet_exercise.apis.response.EnableWalletResponse;
+import com.mini_wallet_exercise.apis.response.WithdrawResponse;
+import com.mini_wallet_exercise.apis.response.WithdrawResponse.WithdrawInfo;
 import com.mini_wallet_exercise.services.TransactionService;
 import com.mini_wallet_exercise.services.WalletService;
 import com.mini_wallet_exercise.utils.JwtUtil;
@@ -220,18 +222,18 @@ public class WalletController {
     try {
       final var userId = JwtUtil.extractUserId(httpRequest);
       final var transaction = transactionService.withdraw(userId, Long.parseLong(amount), referenceId);
-      final var depositInfo = DepositInfo.builder()
+      final var depositInfo = WithdrawInfo.builder()
         .id(transaction.getId().toString())
         .referenceId(transaction.getReferenceId().toString())
         .status(transaction.getStatus().toLowerCase())
         .amount(transaction.getAmount())
-        .depositedBy(transaction.getUser().getId().toString())
-        .depositedAt(transaction.getCreatedAt().format(DATE_TIME_FORMATTER))
+        .withdrawnBy(transaction.getUser().getId().toString())
+        .withdrawnAt(transaction.getCreatedAt().format(DATE_TIME_FORMATTER))
         .build();
 
       return ResponseEntity.ok(
         new MiniWalletResponse(
-          new DepositResponse(depositInfo),
+          new WithdrawResponse(depositInfo),
           SUCCESS
         )
       );

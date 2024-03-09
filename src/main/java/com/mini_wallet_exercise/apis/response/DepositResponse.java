@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.ZonedDateTime;
-
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +22,7 @@ public class DepositResponse {
     @JsonProperty("deposited_by")
     private String depositedBy;
     private String status;
-    @JsonProperty("deposited_at)")
+    @JsonProperty("deposited_at")
     private String depositedAt;
     private Long amount;
     @JsonProperty("reference_id")

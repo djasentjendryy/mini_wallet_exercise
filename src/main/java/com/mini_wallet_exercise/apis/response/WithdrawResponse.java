@@ -10,26 +10,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class EnableWalletResponse {
-
-  private WalletInfo wallet;
+public class WithdrawResponse {
+  private WithdrawInfo withdrawal;
 
   @Builder
   @AllArgsConstructor
   @NoArgsConstructor
   @Data
-  public static class WalletInfo {
-
+  public static class WithdrawInfo {
     private String id;
-
-    @JsonProperty("owned_by")
-    private String ownedBy;
-
+    @JsonProperty("withdrawn_by")
+    private String withdrawnBy;
     private String status;
-
-    @JsonProperty("enabled_at")
-    private String enabledAt;
-
-    private Long balance;
+    @JsonProperty("withdrawn_at")
+    private String withdrawnAt;
+    private Long amount;
+    @JsonProperty("reference_id")
+    private String referenceId;
   }
 }

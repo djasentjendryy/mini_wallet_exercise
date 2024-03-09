@@ -47,7 +47,7 @@ public class TransactionService {
     if (amount <= 0) {
       throw new ValidationException("Amount should be greater than 0");
     }
-
+    validateReferenceId(referenceId);
     walletService.depositBalance(wallet.getId(), amount);
 
     final var transaction = Transaction.builder()
@@ -78,7 +78,7 @@ public class TransactionService {
     if (amount > wallet.getBalance()) {
       throw new ValidationException("Insufficient balance");
     }
-
+    validateReferenceId(referenceId);
     walletService.withdrawBalance(wallet.getId(), amount);
 
     final var transaction = Transaction.builder()
@@ -125,5 +125,12 @@ public class TransactionService {
     );
 
     return transactionResponses;
+  }
+
+  private void validateReferenceId(final String referenceId) throws ValidationException {
+    final  var transaction = transactionRepository.findByReferenceId(UUID.fromString(referenceId));
+    if (transaction.isPresent()) {
+      throw new ValidationException("Reference id already exists");
+    }
   }
 }
