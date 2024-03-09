@@ -1,0 +1,55 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+var springfoxVersion = "3.0.0"
+var junitTestVersion = "4.13.2"
+var springbootTestVersion = "1.4.0.RELEASE"
+var lombokVersion = "1.18.22"
+var jupiterTestVersion = "5.9.2"
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    runtimeOnly 'org.postgresql:postgresql'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "io.springfox:springfox-boot-starter:${springfoxVersion}"
+    testImplementation "junit:junit:${junitTestVersion}"
+    testImplementation "org.springframework.boot:spring-boot-test:${springbootTestVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${jupiterTestVersion}"
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    implementation 'io.jsonwebtoken:jjwt:0.2'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.2.3'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+configurations {
+    compileClasspath {
+        resolutionStrategy.activateDependencyLocking()
+    }
+}
+
+dependencyLocking {
+    lockAllConfigurations()
+}
