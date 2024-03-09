@@ -40,6 +40,7 @@ public class TransactionService {
     final Long amount,
     final String referenceId
   ) throws ValidationException {
+    validateReferenceId(referenceId);
     final var now = ZonedDateTime.now();
     final var user = userService.verifyUser(userId);
     final var wallet = walletService.getActiveWallet(user.getId().toString());
@@ -47,7 +48,6 @@ public class TransactionService {
     if (amount <= 0) {
       throw new ValidationException("Amount should be greater than 0");
     }
-    validateReferenceId(referenceId);
     walletService.depositBalance(wallet.getId(), amount);
 
     final var transaction = Transaction.builder()
@@ -71,6 +71,7 @@ public class TransactionService {
     final Long amount,
     final String referenceId
   ) throws ValidationException {
+    validateReferenceId(referenceId);
     final var now = ZonedDateTime.now();
     final var user = userService.verifyUser(userId);
     final var wallet = walletService.getActiveWallet(user.getId().toString());
@@ -78,7 +79,6 @@ public class TransactionService {
     if (amount > wallet.getBalance()) {
       throw new ValidationException("Insufficient balance");
     }
-    validateReferenceId(referenceId);
     walletService.withdrawBalance(wallet.getId(), amount);
 
     final var transaction = Transaction.builder()
