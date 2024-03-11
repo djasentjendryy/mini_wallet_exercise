@@ -21,12 +21,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.xml.bind.ValidationException;
 import java.time.format.DateTimeFormatter;
 
 import static com.mini_wallet_exercise.constants.FieldNameConstants.AUTHORIZATION;
 import static com.mini_wallet_exercise.constants.FieldNameConstants.FAIL;
 import static com.mini_wallet_exercise.constants.FieldNameConstants.REQUEST_ID;
 import static com.mini_wallet_exercise.constants.FieldNameConstants.SUCCESS;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -99,6 +101,14 @@ public class WalletController {
         new MiniWalletResponse(
           new EnableWalletResponse(walletInfo),
           SUCCESS
+        )
+      );
+    } catch (ValidationException e) {
+      log.error("RequestId: {}, Error occurred while depositing to wallet, ERROR: {}", requestId, e.getMessage());
+      return ResponseEntity.status(BAD_REQUEST).body(
+        new MiniWalletResponse(
+          new ErrorResponse(e.getMessage()),
+          FAIL
         )
       );
     } catch (Exception e) {
@@ -200,6 +210,14 @@ public class WalletController {
           SUCCESS
         )
       );
+    } catch (ValidationException e) {
+      log.error("RequestId: {}, Error occurred while depositing to wallet, ERROR: {}", requestId, e.getMessage());
+      return ResponseEntity.status(BAD_REQUEST).body(
+        new MiniWalletResponse(
+          new ErrorResponse(e.getMessage()),
+          FAIL
+        )
+      );
     } catch (Exception e) {
       log.error("RequestId: {}, Error occurred while depositing to wallet, ERROR: {}", requestId, e.getMessage());
       return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(
@@ -235,6 +253,14 @@ public class WalletController {
         new MiniWalletResponse(
           new WithdrawResponse(depositInfo),
           SUCCESS
+        )
+      );
+    } catch (ValidationException e) {
+      log.error("RequestId: {}, Error occurred while depositing to wallet, ERROR: {}", requestId, e.getMessage());
+      return ResponseEntity.status(BAD_REQUEST).body(
+        new MiniWalletResponse(
+          new ErrorResponse(e.getMessage()),
+          FAIL
         )
       );
     } catch (Exception e) {
